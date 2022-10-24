@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CHAT | Local Storage</title>
+</head>
+<body>
+    <div id="chat">
+        <ol id="messages-list">
+            <!-- dynamically loaded -->
+        </ol>
+        <hr>
+        <div id="form">
+            <input type="text" id="message-input">
+            <button id="message-send" onclick="send();render(messages)">SEND</button>        
+    </div>
+    </div>
+
+    <script>
+        let messages = JSON.parse(localStorage.getItem("messages"))
+            const badWords = ["sh!t","b!tch"]
+            const render = (messages) => {
+                let list = document.getElementById("messages-list")
+                list.innerHTML = ''
+                messages.forEach(message => {
+                    let li = document.createElement("li")
+                    // preprocess render text 
+                    ///String.replace()
+                    message = message.replace(":)", `<img src="emoji.png">`)
+                    li.innerHTML = message
+
+                    list.appendChild(li)
+                })
+            }
+            const send = () => {
+                    let input = document.getElementById("message-input")
+                    let message = input.value.trim() // remove white space
+                    if(input.value == '') {
+
+                    }else {
+                         messages.push(message)
+                    }
+                    //hw1: --DONE
+                    // validate input -> not empty,remove white space
+                    
+                    //hw2: check if badWords are present in text
+                    //     for/loop-->badWords ->String.methodxxx?
+                    //  if included in text
+                    // if a bad word found --->do not render that message
+                    // instead render ->"[censored]"
+                    // badWords.forEach(badWord => {
+                    //     let checkBadWord= messages.include(badWord)
+                    //     if(checkBadWord = true) {
+                    //         message= message.replace(badWord,`<li>Censored</li>`)
+                    //     }
+
+                    // })
+
+
+            //hw3: -DONE
+            //   keep it under 10 messages
+            //QUEUE
+            /////////store data///////
+            if (messages.length > 10) {
+                    messages.splice(0,1)
+            }
+            //Se poate de ajuns la  acest rezultat folosind și metoda shift()
+            //  if (messages.length > 10) {
+            //         messages.shift()
+            //     }
+            localStorage.setItem("messages", JSON.stringify(messages))
+                input.value = ""
+                // hw4*:
+                // reverse the messages order
+            }
+            
+        render(messages)
+    </script>
+</body>
+</html>
